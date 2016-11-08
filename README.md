@@ -27,10 +27,10 @@ import os
 import shutil  
 import jieba  
 import jieba.analyse
-##导入自定义词典  
-#jieba  
+导入自定义词典  
+jieba  
 
-#Read file and cut  
+Read file and cut  
 def read_file_cut():   
     stopwords = {}.fromkeys([ line.strip() for line in open('E:\\dataMining\\chinese_stopword.txt') ])
     #create path
