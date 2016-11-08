@@ -1,134 +1,96 @@
 # 3h 数据清洗
-## 读取文件的处理办法
-## 断句 
+## 1.读取文件的处理办法
+encoding: UTF-8
+import re
+fileBefPro=open('E:\\dataMining\\data.txt')
+fileAftPro=open('E:\\dataMining\\after.txt','a') 
+iter_f=iter(fileBefPro)
+for line in iter_f:#读一行就操作一行
+    #在这里进行处理哈
+    fileAftPro.write(str(line))
+fileAftPro.close()
+fileBefPro.close()
+## 2.断句 
+使用的是re中的split
 根据标点符号进行断句，使用到了 [split中使用中文分隔符](https://segmentfault.com/q/1010000002461248)
-#### 四级标题
-##### 五级标题
-###### 六级标题
+## 3.标点符号清洗
+就是指将文中的标点符号都清洗掉清洗 [清洗中文标点符号代码](http://blog.csdn.net/mach_learn/article/details/41744487)
+## 4.停用词清洗
+第一步在 在Python里安装Jieba中文分词组件 [安装办法点我](http://blog.csdn.net/sanqima/article/details/50965439)
+[清洗办法参考博客](http://blog.sina.com.cn/s/blog_bccfcaf90101ell5.html)
+## 5.处理多个文件
+# encoding: UTF-8
+import sys  
+import re  
+import codecs  
+import os  
+import shutil  
+import jieba  
+import jieba.analyse
+  
+#导入自定义词典  
+#jieba  
 
+#Read file and cut  
+def read_file_cut():   
+    stopwords = {}.fromkeys([ line.strip() for line in open('E:\\dataMining\\chinese_stopword.txt') ])
+    #create path
+    #要处理文件的路径
+    path = "E:\\dataMining\\data\\"
+    #处理完成后写入文件的路径
+    respath="E:\\dataMining\\result\\"
+    #isdir(s)是否是一个目录
+    if os.path.isdir(respath):  #如果respath这个路径存在
+        shutil.rmtree(respath, True)  #则递归移除这个路径,os.removedirs(respath) 不能删除非空目录
+    os.makedirs(respath)  #重新建立一个respath的多级目录
+        
+        
+    #读出原始文件的个数
+    total="%d" % len(os.listdir("E:\\dataMining\\data"))
+    #一共有total个txt文件
+    print total  
+  
+    num = 1
+    total=int(total)
+    while num<=total:
+        name = "%d" % num   
+        fileName = path + str(name) + ".txt"  
+        resName = respath + str(name) + ".txt"  
+        source = open(fileName, 'r')  #r表示只读文件
+        #if os.path.exists(resName):  
+         #   os.remove(resName) #remove(path)表示删除文件 --removedirs(path)表示删除多级目录
+        #使用codecs模块提供的方法创建指定编码格式文件
+        #open(fname,mode,encoding,errors,buffering)
+        result = codecs.open(resName, 'w', 'utf-8')  
+        line = source.readline()  #读取一行
+        line = line.rstrip('\n')  #除首尾空格 
+        while line != "":
+            line = unicode(line, "utf-8")  # 将unicode转换成utf-8,才能写入到文件中
+            #清洗标点符号
+            str_cleaned = re.sub("[\.\！\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+".decode("utf-8"), "", line)
 
+            #用jieba进行分词
+            output = ''
+            segs = jieba.cut(str_cleaned, cut_all=False)
+            for seg in segs:
+                seg = seg.encode('utf-8')
+                if seg not in stopwords:
+                    output += seg
+            print output
+            output += '\r\n'
+            result.write(output.decode('utf8'))
+            line = source.readline()
+        else:
+            print 'End file: ' + str(num)
+            source.close()
+            result.close()
+        num += 1
+     else:
+        print 'End All'
 
+## Run function
+if __name__ == '__main__':
+    read_file_cut()
 
-## 加入图片
-输入
-```
-![这里填写图片标题,可以为空](这里放置图片链接)
+# 3h 新浪微博模拟登录
 
-//例如
-![Meizhuo Logo](https://avatars1.githubusercontent.com/u/6211725?v=2&s=200)
-```
-效果:
-![Meizhuo Logo](https://avatars1.githubusercontent.com/u/6211725?v=2&s=200)
-
-**注意**
-在silentor中，图片均放在blog/img/目录下(例如有一张bg.jpg在img/目录下)
-那么应该这么写
-```
-![图片名](__IMG__/jpg)
-```
-
-如果我的图片bg.jpg放在`img/`的子目录`img/mypic/`咋办？那也容易
-```
-![图片名](__IMG__/mypic/bg.jpg)
-```
-
-
-## 列表
-```
-//第一种风格,记得*号后空一格
-
-* 列表写法1
-* 列表写法1
-* 列表写法1
-
-//第二种风格 记得-号后空一格
-
-- 列表写法1
-- 列表写法1
-- 列表写法1
-```
-
-第二种风格效果
-
-* 列表写法1
-* 列表写法1
-* 列表写法1
-
-第二种风格效果
-
-- 列表写法1
-- 列表写法1
-- 列表写法1
-
-如果还有子列表咋办？
-```
-//子目录只需要多打一个TAB键(or 4个空格)
-- 列表目录1
-    - 列表子目录1
-    - 列表子目录2
-    - 列表子目录3
-```
-效果:
-
-- 列表目录1
-    - 列表子目录1
-    - 列表子目录2
-    - 列表子目录3
-
-
-
-## 字体加粗
-输入
-```
-**这是加粗的内容**
-```
-效果:
-**这是加粗的内容**
-
-
-
-## 斜体
-输入
-```
-_这是斜体_
-```
-效果:
-_这是斜体_
-
-
-## 删除线
-输入
-```
-~~这是删除线~~
-```
-效果:
-~~这是删除线~~
-
-
-
-## 引用
-输入
-```
->人生自古谁无死？
-```
-效果:
->人生自古谁无死？
-
-
-
-## 表格
-输入
-```
-表格标题1  |表格标题2  |  表格标题3
------------- | -------------| -------------
-nickname | 用户昵称     | Y
-email    |  邮箱      | Y
-psw      | 密码   | Y
-```
-效果:
-
-表格标题1  |表格标题2  |  表格标题3
------------- | -------------| -------------
-nickname | 用户昵称     | Y
-email    |  邮箱      | Y
-psw      | 密码    | Y
