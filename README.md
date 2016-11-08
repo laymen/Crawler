@@ -19,7 +19,7 @@ fileBefPro.close()
 第一步在 在Python里安装Jieba中文分词组件 [安装办法点我](http://blog.csdn.net/sanqima/article/details/50965439)
 [清洗办法参考博客](http://blog.sina.com.cn/s/blog_bccfcaf90101ell5.html)
 ## 5.处理多个文件
-# encoding: UTF-8
+encoding: UTF-8
 import sys  
 import re  
 import codecs  
