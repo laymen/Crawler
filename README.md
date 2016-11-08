@@ -27,8 +27,7 @@ import os
 import shutil  
 import jieba  
 import jieba.analyse
-  
-#导入自定义词典  
+##导入自定义词典  
 #jieba  
 
 #Read file and cut  
