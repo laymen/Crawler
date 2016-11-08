@@ -92,4 +92,4 @@ if __name__ == '__main__':
     read_file_cut()
 
 # 3h 新浪微博模拟登录
-
+见我csdn博客  [新浪微博模拟登录](http://blog.csdn.net/u010343650/article/details/52945630)
